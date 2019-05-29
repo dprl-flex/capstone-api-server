@@ -4,4 +4,4 @@
 - npm i
 - npm run seed:dev
 - npm run start:dev
-- npm run test:dev
+- npm test
