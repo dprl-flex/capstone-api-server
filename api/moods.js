@@ -17,10 +17,9 @@ router.get('/:id', (req, res, next) => {
 
 //create mood
 router.post('/:id', (req, res, next) => {
-  console.log('BODY', req.body);
   Mood.create({
     userId: req.params.id,
-    title: req.body.title,
+    value: req.body.value,
   })
     .then(mood => res.status(201).json(mood))
     .catch(next);
