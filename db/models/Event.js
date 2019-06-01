@@ -1,5 +1,7 @@
 const db = require('../db');
 const { Sequelize } = db;
+const Op = Sequelize.Op;
+const Assigned = require('./Assigned');
 
 const Event = db.define('event', {
     id: {
@@ -31,7 +33,23 @@ const Event = db.define('event', {
     description: {
         type: Sequelize.TEXT
     }
-
 })
+Event.findAssigned = function (userId) {
+    return Assigned.findAll({
+        where: {
+            userId: userId
+        },
+        attributes: ['eventId']
+    })
+        .then(eventList => {
+            return Event.findAll({
+                where: {
+                    id: {
+                        [Op.in]: eventList.map(event => event.eventId)
+                    }
+                }
+            })
+        })
+}
 
 module.exports = Event;

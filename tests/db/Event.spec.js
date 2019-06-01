@@ -83,5 +83,32 @@ describe('Event database model', () => {
                 expect(assigned.userId).to.equal(assignee.id);
             })
             .catch(e => { throw new Error(e) });
+    });
+    it('has a method to find all events assigned to a particular user', async () => {
+        const user = await User.create({
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+            isAdmin: true,
+            age: 36,
+            email: faker.internet.email(),
+            imgUrl:
+                'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
+            password: 'P@ssword1',
+        });
+        const event = await Event.create({
+            title: 'event title',
+            category: 'chore'
+        });
+        const assigned = await Assigned.invite({
+            eventId: event.id,
+            userId: user.id
+        });
+        Event.findAssigned(user.id)
+            .then(events => {
+                expect(events.length).to.equal(1);
+                expect(events[0].title).to.equal('event title');
+                expect(events[0].category).to.equal('chore');
+            })
+            .catch(e => { throw new Error(e) })
     })
 })
