@@ -50,7 +50,7 @@ describe('Polling routes', async () => {
   describe('GET /api/polls', () => {
     it('retrieves all polls', async () => {
       const response = await agent.get('/api/polls').expect(200);
-      //expect(response.body).to.have.length(2);
+      expect(!!response.body.find(poll => poll.id === pollMap[0].id)).to.equal(true);
     });
   });
   describe('POST /api/polls', () => {
