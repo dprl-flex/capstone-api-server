@@ -1,5 +1,5 @@
 const faker = require('faker');
-const { Family, Relationship, User, Poll, Choice } = require('./models');
+const { Family, Relationship, User, Poll, Choice, Event, Assigned } = require('./models');
 const { dbSync } = require('./index');
 
 dbSync(true).then(() => {
@@ -27,6 +27,25 @@ dbSync(true).then(() => {
     })
     .then(([p1, p2, c1, c2]) => {
       return Promise.all([
+        Event.create({
+          ownerId: p1.id,
+          title: 'Tennis Game',
+          deadline: new Date('2019-06-08T12:00:00'),
+          category: 'event'
+        }),
+        Event.create({
+          ownerId: p1.id,
+          title: 'Clean the Bathroom',
+          description: 'Clean the floors, sink, and shower!!',
+          deadline: new Date('2019-06-15T00:00:00'),
+          category: 'chore'
+        }),
+        Event.create({
+          ownerId: c1.id,
+          title: 'Choir Recital',
+          deadline: new Date('2019-07-18T17:30:00'),
+          category: 'event'
+        }),
         Relationship.create({
           userId: p1.id,
           RelationshipId: p2.id,
@@ -106,7 +125,7 @@ dbSync(true).then(() => {
       ]);
     })
     .then(
-      ([r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, p1, p2, p3, p4]) => {
+      ([e1, e2, e3, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, p1, p2, p3, p4]) => {
         return Promise.all([
           Choice.create({
             text: 'Chicken',
@@ -139,6 +158,10 @@ dbSync(true).then(() => {
           Choice.create({
             text: 'No',
             pollId: p4.id
+          }),
+          Assigned.create({
+            eventId: e3.id,
+            userId: e1.ownerId
           })
         ]);
       }
