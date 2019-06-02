@@ -10,8 +10,18 @@ dbSync(true).then(() => {
     .then(family => {
       const famCount = [...new Array(4)];
       const lastName = faker.name.lastName();
-      return Promise.all(
-        famCount.map((v, idx) =>
+      return Promise.all([
+        User.create({
+          firstName: 'Jane',
+          lastName: 'Doe',
+          isAdmin: true,
+          age: 30,
+          imgUrl: faker.internet.avatar(),
+          email: 'janedoe@email.com',
+          password: 'p@ssWord!2',
+          familyId: family.id
+        }),
+        ...famCount.map((v, idx) =>
           User.create({
             firstName: faker.name.firstName(),
             lastName,
@@ -23,9 +33,9 @@ dbSync(true).then(() => {
             familyId: family.id
           })
         )
-      );
+      ]);
     })
-    .then(([p1, p2, c1, c2]) => {
+    .then(([p1, p2, p3, c1, c2]) => {
       return Promise.all([
         Event.create({
           ownerId: p1.id,
