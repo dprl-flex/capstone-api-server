@@ -8,4 +8,6 @@ router.use('/polls', require('./polls'));
 
 router.use('/moods', require('./moods'));
 
+router.use('/events', require('./events'));
+
 module.exports = router;
