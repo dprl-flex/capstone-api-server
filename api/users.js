@@ -1,6 +1,31 @@
 const router = require('express').Router();
 const { User, Relationship, Poll } = require('../db/models');
 
+//auth routes
+router.put('/login', (req, res, next) => {
+  User.authenticate(req.body.email, req.body.password)
+    .then(user => {
+      req.session.userId = user.id;
+      res.json(user);
+    })
+    .catch(next);
+});
+
+router.delete('/logout', (req, res, next) => {
+  req.session.destroy();
+  res.sendStatus(204);
+});
+
+router.get('/session', (req, res, next) => {
+  if (req.session.userId) {
+    User.findByPk(req.session.userId)
+      .then(user => {
+        res.json(user);
+      })
+      .catch(next);
+  } else res.sendStatus(404);
+});
+
 //get all users
 router.get('/', (req, res, next) => {
   User.findAll()
@@ -20,21 +45,6 @@ router.post('/', (req, res, next) => {
   User.create(req.body)
     .then(user => res.send(user))
     .catch(next);
-});
-
-//auth routes
-router.put('/login', (req, res, next) => {
-  User.authenticate(req.body.email, req.body.password)
-    .then(user => {
-      req.session.userId = user.id;
-      res.json(user);
-    })
-    .catch(next);
-});
-
-router.delete('/logout', (req, res, next) => {
-  req.session.destroy();
-  res.sendStatus(204);
 });
 
 //get users relationships

@@ -11,6 +11,7 @@ app.use(cors());
 
 app.use(express.json());
 
+//handle sessions
 app.use(
   session({
     secret: 'This is not a very secure secret...',

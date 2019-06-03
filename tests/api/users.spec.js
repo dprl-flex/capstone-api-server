@@ -6,6 +6,9 @@ const app = require('../../server').app;
 const agent = require('supertest')(app);
 const { User } = require('../../db');
 const faker = require('faker');
+const session = require('supertest-session');
+
+let testSession = null;
 
 describe('User Routes', () => {
   let userMap;
@@ -31,8 +34,7 @@ describe('User Routes', () => {
   beforeEach(async () => {
     userData[0].email = faker.internet.email();
     userData[1].email = faker.internet.email();
-    const createdUsers = await User.bulkCreate(userData);
-    userMap = createdUsers.map(user => user.dataValues);
+    userMap = await Promise.all(userData.map(user => User.create(user)));
   });
   describe('GET api/users', () => {
     it('sends all users', async () => {
@@ -61,7 +63,36 @@ describe('User Routes', () => {
         email: userData[0].email,
         password: userData[0].password,
       });
-      console.log(response.error);
+      expect(response.body.email).to.equal(userData[0].email);
+    });
+  });
+  describe('GET /api/users/session', () => {
+    beforeEach(() => {
+      testSession = session(app);
+    });
+    it('can get a session for a logged in user', async () => {
+      await testSession.put(`/api/users/login`).send({
+        email: userData[0].email,
+        password: userData[0].password,
+      });
+      const loggedInUser = await testSession.get('/api/users/session');
+      expect(loggedInUser.body.email).to.equal(userData[0].email);
+    });
+    it('will throw an error if there is no logged in user', async () => {
+      const response = await testSession.get('/api/users/session');
+      expect(response.error).to.be.ok;
+      expect(response.status).to.equal(404);
+    });
+  });
+  describe('DELETE/ api/users/logout', () => {
+    it('can log a user out', async () => {
+      await testSession.put(`/api/users/login`).send({
+        email: userData[0].email,
+        password: userData[0].password,
+      });
+      await testSession.delete('/api/users/logout');
+      const response = await testSession.get('/api/users/session');
+      expect(response.status).to.equal(404);
     });
   });
 });
