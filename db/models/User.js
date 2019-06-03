@@ -125,7 +125,38 @@ const User = db.define(
     scopes: {
       login: {},
     },
+    hooks: {
+      beforeSave: function(user) {
+        return bcrypt.hash(user.password, 5).then(hash => {
+          user.password = hash;
+          return user;
+        });
+      },
+    },
   }
 );
+
+User.authenticate = function(email, password) {
+  let _user;
+  return this.scope('login')
+    .findOne({ where: { email } })
+    .then(user => {
+      if (!user) {
+        const error = new Error('bad credentials');
+        error.status = 401;
+        throw error;
+      }
+      _user = user;
+      return bcrypt.compare(password, user.password);
+    })
+    .then(authenticated => {
+      if (authenticated) {
+        return _user;
+      }
+      const error = new Error('bad credentials');
+      error.status = 401;
+      throw error;
+    });
+};
 
 module.exports = User;
