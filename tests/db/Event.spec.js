@@ -4,13 +4,17 @@ const faker = require('faker');
 
 describe('Event database model', () => {
     it('can create an event with status of upcoming', done => {
+        const date = new Date();
         Event.create({
             title: 'title',
-            category: 'chore'
+            category: 'chore',
+            deadline: date
         })
             .then(event => {
                 expect(event.title).to.equal('title');
                 expect(event.status).to.equal('upcoming');
+                expect(event.deadline.getDate()).to.equal(date.getDate());
+                expect(event.deadline.getMonth()).to.equal(date.getMonth());
                 done();
             })
             .catch(ex => done(ex));
@@ -27,6 +31,7 @@ describe('Event database model', () => {
             .catch(() => done());
     });
     it('can create an event with a user as the owner', async () => {
+        const date = new Date('2019-12-17T18:15:00')
         const user = await User.create({
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
@@ -40,10 +45,12 @@ describe('Event database model', () => {
         Event.create({
             title: 'title',
             category: 'event',
-            ownerId: user.id
+            ownerId: user.id,
+            deadline: date
         })
             .then((event) => {
-                expect(event.ownerId).to.equal(user.id)
+                expect(event.ownerId).to.equal(user.id);
+                expect(event.deadline.getYear()).to.equal(date.getYear());
             })
             .catch(e => { throw new Error(e) })
 

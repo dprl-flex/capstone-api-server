@@ -2,10 +2,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "start:dev": "nodemon -r dotenv/config server.js",
+    "start:dev": "source .env; nodemon -r dotenv/config server.js",
     "postinstall": "npm run seed",
     "seed": "node ./db/seed.js",
-    "seed:dev": "node -r dotenv/config ./db/seed",
+    "seed:dev": " source .env; node -r dotenv/config ./db/seed",
     "test": "node -r dotenv/config ./node_modules/mocha/bin/mocha ./tests/*/*.spec.js --watch"
   },
   "dependencies": {
