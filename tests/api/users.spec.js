@@ -55,4 +55,13 @@ describe('User Routes', () => {
       expect(response.body.firstName).to.equal(userMap[1].firstName);
     });
   });
+  describe('PUT /api/users/login', () => {
+    it('can log a user in', async () => {
+      const response = await agent.put(`/api/users/login`).send({
+        email: userData[0].email,
+        password: userData[0].password,
+      });
+      console.log(response.error);
+    });
+  });
 });

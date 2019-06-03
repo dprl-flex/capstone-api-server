@@ -22,6 +22,21 @@ router.post('/', (req, res, next) => {
     .catch(next);
 });
 
+//auth routes
+router.put('/login', (req, res, next) => {
+  User.authenticate(req.body.email, req.body.password)
+    .then(user => {
+      req.session.userId = user.id;
+      res.json(user);
+    })
+    .catch(next);
+});
+
+router.delete('/logout', (req, res, next) => {
+  req.session.destroy();
+  res.sendStatus(204);
+});
+
 //get users relationships
 router.get('/:id/relationships', (req, res, next) => {
   Relationship.findAll({
