@@ -60,4 +60,22 @@ describe('User database model', () => {
       })
       .catch(() => done());
   });
+  it('will not send the password when using default scope', done => {
+    User.findOne()
+      .then(user => {
+        expect(user.password).not.to.be.ok;
+        done();
+      })
+      .catch(e => done(e));
+  });
+  it('will send email and password when using login scope', done => {
+    User.scope('login')
+      .findOne()
+      .then(user => {
+        expect(user.email).to.be.ok;
+        expect(user.password).to.be.ok;
+        done();
+      })
+      .catch(e => done(e));
+  });
 });
