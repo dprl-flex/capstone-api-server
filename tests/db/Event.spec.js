@@ -117,5 +117,22 @@ describe('Event database model', () => {
                 expect(events[0].category).to.equal('chore');
             })
             .catch(e => { throw new Error(e) })
+    });
+    it('can find assignees to a particular event', async () => {
+        const user = await User.findOne();
+        const newEv = await Event.create({
+            title: 'a test event',
+            category: 'chore'
+        });
+        await Assigned.invite({
+            userId: user.id,
+            eventId: newEv.id
+        });
+        newEv.findAssignees()
+            .then(assignees => {
+                expect(assignees.length).to.equal(1);
+                expect(assignees[0].id).to.equal(user.id);
+            })
+            .catch(e => { throw new Error(e) })
     })
 })

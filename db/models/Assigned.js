@@ -13,7 +13,7 @@ Assigned.invite = function ({ eventId, userId }) {
         eventId,
         userId
     })
-}
+};
 
 module.exports = Assigned;
 
