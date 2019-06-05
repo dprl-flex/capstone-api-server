@@ -2,6 +2,7 @@ const db = require('../db');
 const { Sequelize } = db;
 const Op = Sequelize.Op;
 const Assigned = require('./Assigned');
+const User = require('./User');
 
 const Event = db.define('event', {
     id: {
@@ -46,6 +47,23 @@ Event.findAssigned = function (userId) {
                 where: {
                     id: {
                         [Op.in]: eventList.map(event => event.eventId)
+                    }
+                }
+            })
+        })
+}
+Event.prototype.findAssignees = function () {
+    return Assigned.findAll({
+        where: {
+            eventId: this.id
+        },
+        attributes: ['userId']
+    })
+        .then(userList => {
+            return User.findAll({
+                where: {
+                    id: {
+                        [Op.in]: userList.map(user => user.userId)
                     }
                 }
             })

@@ -29,6 +29,15 @@ router.get('/assigned/:id', (req, res, next) => {
         .catch(next);
 });
 
+//get all assignees to an event
+
+router.get('/:id/assignees', (req, res, next) => {
+    Event.findByPk(req.params.id)
+        .then(event => event.findAssignees())
+        .then(assignees => res.send(assignees))
+        .catch(next)
+})
+
 //create new event
 
 router.post('/', (req, res, next) => {
