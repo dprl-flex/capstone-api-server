@@ -59,4 +59,12 @@ router.post('/:id/votes', (req, res, next) => {
     .catch(next);
 });
 
+//delete a vote
+router.delete('/:pollId/votes/:voteId', (req, res, next) => {
+  Vote.findByPk(req.params.voteId)
+    .then(vote => vote.destroy())
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
 module.exports = router;
