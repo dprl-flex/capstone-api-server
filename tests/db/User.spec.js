@@ -60,4 +60,58 @@ describe('User database model', () => {
       })
       .catch(() => done());
   });
+  it('will not send the password when using default scope', done => {
+    User.findOne()
+      .then(user => {
+        expect(user.password).not.to.be.ok;
+        done();
+      })
+      .catch(e => done(e));
+  });
+  it('will send email and password when using login scope', done => {
+    User.scope('login')
+      .findOne()
+      .then(user => {
+        expect(user.email).to.be.ok;
+        expect(user.password).to.be.ok;
+        done();
+      })
+      .catch(e => done(e));
+  });
+  it('hashes the password when the user is created', done => {
+    User.create({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      isAdmin: true,
+      age: 36,
+      email: faker.internet.email(),
+      imgUrl:
+        'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
+      password: 'P@ssword1',
+    })
+      .then(user => {
+        expect(user.password).to.be.ok;
+        expect(user.password).not.to.equal('P@ssword1');
+        done();
+      })
+      .catch(e => done(e));
+  });
+  it('can log a user in', done => {
+    User.create({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      isAdmin: true,
+      age: 36,
+      email: faker.internet.email(),
+      imgUrl:
+        'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
+      password: 'P@ssword1',
+    })
+      .then(user => User.authenticate(user.email, 'P@ssword1'))
+      .then(user => {
+        expect(user.email).to.be.ok;
+        done();
+      })
+      .catch(e => done(e));
+  });
 });
