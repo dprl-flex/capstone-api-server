@@ -132,6 +132,9 @@ const User = db.define(
           return user;
         });
       },
+      afterCreate: function(user) {
+        return db.model('mood').create({ userId: user.id, value: 0.5 });
+      },
     },
   }
 );
