@@ -52,10 +52,30 @@ router.get('/:id/votes', (req, res, next) => {
     .catch(next);
 });
 
+//get a user's vote
+router.get('/:id/votes/:userId', (req, res, next) => {
+  Vote.findAll({
+    where: {
+      pollId: req.params.id,
+      userId: req.params.userId
+    }
+  })
+    .then(votes => res.send(votes))
+    .catch(next);
+});
+
 //cast a vote
 router.post('/:id/votes', (req, res, next) => {
   Vote.castVote(req.body)
     .then(vote => res.send(vote))
+    .catch(next);
+});
+
+//delete a vote
+router.delete('/:pollId/votes/:voteId', (req, res, next) => {
+  Vote.findByPk(req.params.voteId)
+    .then(vote => vote.destroy())
+    .then(() => res.sendStatus(204))
     .catch(next);
 });
 
