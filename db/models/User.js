@@ -1,6 +1,7 @@
 const db = require('../db');
 const { Sequelize } = db;
 const bcrypt = require('bcrypt');
+const jwt = require('jwt-simple');
 
 const User = db.define(
   'user',
@@ -154,7 +155,7 @@ User.authenticate = function(email, password) {
     })
     .then(authenticated => {
       if (authenticated) {
-        return _user;
+        return jwt.encode(_user.id, process.env.SECRET);
       }
       const error = new Error('bad credentials');
       error.status = 401;
