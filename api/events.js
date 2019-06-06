@@ -64,4 +64,12 @@ router.delete('/:id', (req, res, next) => {
         .catch(next);
 });
 
+//assign an event to a user
+
+router.post('/assign', (req, res, next) => {
+    Assigned.create(req.body)
+        .then(assigned => res.send(assigned))
+        .catch(next);
+})
+
 module.exports = router;
