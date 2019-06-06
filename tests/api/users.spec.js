@@ -65,4 +65,16 @@ describe('User Routes', () => {
       );
     });
   });
+  describe('GET /api/users/authed', () => {
+    it('can get a user based on a token.', async () => {
+      const response = await agent.put(`/api/users/login`).send({
+        email: userMap[0].email,
+        password: 'P@ssword1',
+      });
+      const userResponse = await agent
+        .get('/api/users/authed')
+        .set({ authorization: response.text });
+      expect(userResponse.body.id).to.equal(userMap[0].id);
+    });
+  });
 });

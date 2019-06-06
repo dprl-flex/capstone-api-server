@@ -55,6 +55,7 @@ app.use((req, res, next) => {
 
 //error handling
 app.use((err, req, res, next) => {
+  console.log('ERROR HANDLER');
   res.status(err.status || 500);
   res.send(err.message || 'Internal server error');
 });
