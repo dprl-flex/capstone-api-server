@@ -116,6 +116,24 @@ describe('User database model', () => {
       )
       .catch(e => done(e));
   });
+  it('Can ignores the case of the email address', done => {
+    User.create({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      isAdmin: true,
+      age: 36,
+      email: faker.internet.email(),
+      imgUrl:
+        'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
+      password: 'P@ssword1',
+    })
+      .then(user => User.authenticate(user.email.toUpperCase(), 'P@ssword1'))
+      .then(token => {
+        expect(token).to.be.ok;
+        done();
+      })
+      .catch(e => done(e));
+  });
   it('Can send back user data based on a token', done => {
     User.findOne()
       .then(user => {
