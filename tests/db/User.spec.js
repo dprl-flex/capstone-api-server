@@ -116,4 +116,15 @@ describe('User database model', () => {
       )
       .catch(e => done(e));
   });
+  it('Can send back user data based on a token', done => {
+    User.findOne()
+      .then(user => {
+        const token = jwt.encode(user.id, process.env.SECRET);
+        User.exchangeTokenForUser(token).then(returnedUser => {
+          expect(returnedUser.id).to.equal(user.id);
+          done();
+        });
+      })
+      .catch(e => done(e));
+  });
 });

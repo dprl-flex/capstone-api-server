@@ -163,4 +163,17 @@ User.authenticate = function(email, password) {
     });
 };
 
+User.exchangeTokenForUser = function(token) {
+  const userId = jwt.decode(token, process.env.SECRET);
+  return User.findByPk(userId).then(user => {
+    if (!user) {
+      const err = new Error('Bad Token');
+      err.status = 401;
+      throw err;
+    } else {
+      return user;
+    }
+  });
+};
+
 module.exports = User;
