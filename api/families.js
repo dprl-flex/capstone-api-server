@@ -20,7 +20,7 @@ router.get('/:id/users', (req, res, next) => {
     User.findAll({
         where: {
             familyId: req.params.id
-        }, include: [Event, Mood]
+        }, include: [Mood]
     })
         .then(users => res.send(users))
         .catch(next);
