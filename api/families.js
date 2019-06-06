@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Family } = require('../db/models');
+const { Family, User, Event, Mood } = require('../db/models');
 
 //get all families
 router.get('/', (req, res, next) => {
@@ -14,5 +14,16 @@ router.get('/:id', (req, res, next) => {
         .then(family => res.send(family))
         .catch(next)
 });
+
+//get all users in a family
+router.get('/:id/users', (req, res, next) => {
+    User.findAll({
+        where: {
+            familyId: req.params.id
+        }, include: [Event, Mood]
+    })
+        .then(users => res.send(users))
+        .catch(next);
+})
 
 module.exports = router;

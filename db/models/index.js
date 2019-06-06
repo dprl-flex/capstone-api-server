@@ -22,6 +22,7 @@ Vote.belongsTo(Poll);
 Poll.hasMany(Vote);
 
 Event.belongsTo(User, { as: 'Owner', foreignKey: 'ownerId' });
+User.hasMany(Event, { as: 'OwnEvents', foreignKey: 'ownerId' });
 
 Event.belongsToMany(User, { through: Assigned });
 User.belongsToMany(Event, { through: Assigned });
