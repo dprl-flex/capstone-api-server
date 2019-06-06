@@ -15,6 +15,17 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
+//get user by token
+router.get('/authed', (req, res, next) => {
+  if (req.user) {
+    res.send(req.user);
+  } else {
+    const err = new Error('Not logged in');
+    err.status = 401;
+    next(err);
+  }
+});
+
 //get user by id
 router.get('/:id', (req, res, next) => {
   User.findByPk(req.params.id)
