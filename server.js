@@ -4,6 +4,29 @@ const { dbSync } = require('./db');
 const port = process.env.PORT || 3000;
 const cors = require('cors');
 const session = require('express-session');
+const { User } = require('./db');
+
+//find logged in user and attach user to req.body
+app.use((req, res, next) => {
+  if (!req.headers.authorization) {
+    return next();
+  }
+  User.exchangeTokenForUser(req.headers.authorization)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(next);
+});
+
+const isLoggedIn = (req, res, next) => {
+  if (!req.user) {
+    const error = new Error('not logged in');
+    error.status = 401;
+    return next(error);
+  }
+  next();
+};
 
 app.use(cors());
 
@@ -32,6 +55,7 @@ app.use((req, res, next) => {
 
 //error handling
 app.use((err, req, res, next) => {
+  console.log('ERROR HANDLER');
   res.status(err.status || 500);
   res.send(err.message || 'Internal server error');
 });
