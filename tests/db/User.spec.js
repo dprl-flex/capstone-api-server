@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const { User } = require('../../db');
 const faker = require('faker');
+const jwt = require('jwt-simple');
 
 describe('User database model', () => {
   it('Can create a user with the necessary fields entered', done => {
@@ -96,7 +97,7 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  it('can log a user in', done => {
+  it('can log a user in, and get back the correct token', done => {
     User.create({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -107,10 +108,40 @@ describe('User database model', () => {
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
       password: 'P@ssword1',
     })
-      .then(user => User.authenticate(user.email, 'P@ssword1'))
-      .then(user => {
-        expect(user.email).to.be.ok;
+      .then(user =>
+        User.authenticate(user.email, 'P@ssword1').then(token => {
+          expect(token).to.equal(jwt.encode(user.id, process.env.SECRET));
+          done();
+        })
+      )
+      .catch(e => done(e));
+  });
+  it('Can ignores the case of the email address', done => {
+    User.create({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      isAdmin: true,
+      age: 36,
+      email: faker.internet.email(),
+      imgUrl:
+        'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
+      password: 'P@ssword1',
+    })
+      .then(user => User.authenticate(user.email.toUpperCase(), 'P@ssword1'))
+      .then(token => {
+        expect(token).to.be.ok;
         done();
+      })
+      .catch(e => done(e));
+  });
+  it('Can send back user data based on a token', done => {
+    User.findOne()
+      .then(user => {
+        const token = jwt.encode(user.id, process.env.SECRET);
+        User.exchangeTokenForUser(token).then(returnedUser => {
+          expect(returnedUser.id).to.equal(user.id);
+          done();
+        });
       })
       .catch(e => done(e));
   });

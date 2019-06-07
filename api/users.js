@@ -4,26 +4,8 @@ const { User, Relationship, Poll } = require('../db/models');
 //auth routes
 router.put('/login', (req, res, next) => {
   User.authenticate(req.body.email, req.body.password)
-    .then(user => {
-      req.session.userId = user.id;
-      res.json(user);
-    })
+    .then(token => res.send(token))
     .catch(next);
-});
-
-router.delete('/logout', (req, res, next) => {
-  req.session.destroy();
-  res.sendStatus(204);
-});
-
-router.get('/session', (req, res, next) => {
-  if (req.session.userId) {
-    User.findByPk(req.session.userId)
-      .then(user => {
-        res.json(user);
-      })
-      .catch(next);
-  } else res.sendStatus(404);
 });
 
 //get all users
@@ -31,6 +13,17 @@ router.get('/', (req, res, next) => {
   User.findAll()
     .then(users => res.send(users))
     .catch(next);
+});
+
+//get user by token
+router.get('/authed', (req, res, next) => {
+  if (req.user) {
+    res.send(req.user);
+  } else {
+    const err = new Error('Not logged in');
+    err.status = 401;
+    next(err);
+  }
 });
 
 //get user by id

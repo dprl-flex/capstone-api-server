@@ -1,6 +1,7 @@
 const db = require('../db');
 const { Sequelize } = db;
 const bcrypt = require('bcrypt');
+const jwt = require('jwt-simple');
 
 const User = db.define(
   'user',
@@ -129,6 +130,7 @@ const User = db.define(
       beforeSave: function(user) {
         return bcrypt.hash(user.password, 5).then(hash => {
           user.password = hash;
+          user.email = user.email.toLowerCase();
           return user;
         });
       },
@@ -140,6 +142,7 @@ const User = db.define(
 );
 
 User.authenticate = function(email, password) {
+  email = email.toLowerCase();
   let _user;
   return this.scope('login')
     .findOne({ where: { email } })
@@ -154,12 +157,25 @@ User.authenticate = function(email, password) {
     })
     .then(authenticated => {
       if (authenticated) {
-        return _user;
+        return jwt.encode(_user.id, process.env.SECRET);
       }
       const error = new Error('bad credentials');
       error.status = 401;
       throw error;
     });
+};
+
+User.exchangeTokenForUser = function(token) {
+  const userId = jwt.decode(token, process.env.SECRET);
+  return User.findByPk(userId).then(user => {
+    if (!user) {
+      const err = new Error('Bad Token');
+      err.status = 401;
+      throw err;
+    } else {
+      return user;
+    }
+  });
 };
 
 module.exports = User;

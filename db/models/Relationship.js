@@ -1,5 +1,7 @@
 const db = require('../db');
 const { Sequelize } = db;
+const User = require('./User');
+const Op = Sequelize.Op;
 
 const Relationship = db.define('relationship', {
   id: {
@@ -49,5 +51,22 @@ Relationship.updateStatus = (userId, RelationshipId, diff) => {
     }
   );
 };
+
+Relationship.findRelated = (userId) => {
+  return Relationship.findAll({
+    where: {
+      userId
+    }
+  })
+    .then(relationships => {
+      return User.findAll({
+        where: {
+          id: {
+            [Op.in]: relationships.map(relationship => relationship.RelationshipId)
+          }
+        }
+      })
+    })
+}
 
 module.exports = Relationship;
