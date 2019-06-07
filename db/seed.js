@@ -151,19 +151,23 @@ dbSync(true)
         return Promise.all([
           Poll.create({
             ownerId: users[0].id,
-            text: "What's for dinner?"
+            text: "What's for dinner?",
+            familyId: family.id
           }),
           Poll.create({
             ownerId: users[1].id,
-            text: 'What movie should we watch?'
+            text: 'What movie should we watch?',
+            familyId: family.id
           }),
           Poll.create({
             ownerId: users[3].id,
-            text: 'What am I getting for Christmas?'
+            text: 'What am I getting for Christmas?',
+            familyId: family.id
           }),
           Poll.create({
             ownerId: users[4].id,
-            text: "Can we get McDonald's?"
+            text: "Can we get McDonald's?",
+            familyId: family.id
           })
         ]);
       };
