@@ -72,13 +72,13 @@ router.post('/:id/votes', (req, res, next) => {
 });
 
 //delete a vote
-router.delete('/votes/:userId', (req, res, next) => {
-  Vote.findAll({
+router.delete('/:pollId/votes/:userId', (req, res, next) => {
+  Vote.destroy({
     where: {
-      userId: req.params.userId
+      userId: req.params.userId,
+      pollId: req.params.pollId
     }
   })
-    .then(vote => vote.destroy())
     .then(() => res.sendStatus(204))
     .catch(next);
 });
