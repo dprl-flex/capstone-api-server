@@ -34,6 +34,25 @@ router.get('/:id/choices', (req, res, next) => {
     .catch(next);
 });
 
+//update a poll
+router.put('/:id', (req, res, next) => {
+  Poll.findByPk(req.params.id)
+    .then(poll => poll.update(req.body))
+    .then(poll => res.status(201).send(poll))
+    .catch(next);
+});
+
+//delete a poll
+router.delete('/:id', (req, res, next) => {
+  Poll.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
 //create new option for a poll
 router.post('/:id/choices', (req, res, next) => {
   Choice.create(req.body)
