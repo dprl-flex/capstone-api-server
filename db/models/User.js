@@ -130,6 +130,7 @@ const User = db.define(
       beforeSave: function(user) {
         return bcrypt.hash(user.password, 5).then(hash => {
           user.password = hash;
+          user.email = user.email.toLowerCase();
           return user;
         });
       },
@@ -141,6 +142,7 @@ const User = db.define(
 );
 
 User.authenticate = function(email, password) {
+  email = email.toLowerCase();
   let _user;
   return this.scope('login')
     .findOne({ where: { email } })
