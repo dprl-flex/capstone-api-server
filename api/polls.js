@@ -72,8 +72,12 @@ router.post('/:id/votes', (req, res, next) => {
 });
 
 //delete a vote
-router.delete('/votes/:voteId', (req, res, next) => {
-  Vote.findByPk(req.params.voteId)
+router.delete('/votes/:userId', (req, res, next) => {
+  Vote.findAll({
+    where: {
+      userId: req.params.userId
+    }
+  })
     .then(vote => vote.destroy())
     .then(() => res.sendStatus(204))
     .catch(next);
