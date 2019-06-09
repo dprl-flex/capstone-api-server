@@ -117,5 +117,22 @@ describe('User Routes', () => {
         .set({ authorization: token });
       expect(created.body.familyId).to.equal(family.id);
     });
+    it('can create and assign a new family to a new user', async () => {
+      const newUser = {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        email: faker.internet.email(),
+        age: 20,
+        imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
+        password: 'P@ssword1',
+      };
+      newUser.family = { name: newUser.lastName, code: faker.random.uuid() };
+      const response = await agent.post('/api/users').send(newUser);
+      const token = response.text;
+      const created = await agent
+        .get('/api/users/authed')
+        .set({ authorization: token });
+      expect(created.body.familyId).to.be.ok;
+    });
   });
 });
