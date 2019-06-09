@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const { User } = require('../../db');
+const { User, Family } = require('../../db');
 const faker = require('faker');
 const jwt = require('jwt-simple');
 
@@ -161,5 +161,23 @@ describe('User database model', () => {
         done();
       })
       .catch(e => done(e));
+  });
+  it('Can create a user and assign them to a family if user enters a family code', async () => {
+    const newUser = {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      email: faker.internet.email(),
+      age: 20,
+      imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
+      password: 'P@ssword1',
+    };
+    const family = await Family.create({
+      name: faker.name.lastName(),
+      code: faker.random.uuid(),
+    });
+    newUser.familyCode = family.code;
+    const createdToken = await User.signUp(newUser);
+    const created = await User.exchangeTokenForUser(createdToken);
+    expect(created.familyId).to.equal(family.id);
   });
 });

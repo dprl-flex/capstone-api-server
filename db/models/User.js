@@ -178,10 +178,19 @@ User.exchangeTokenForUser = function(token) {
   });
 };
 
-User.signUp = function(userData) {
-  return this.create(userData).then(user =>
-    jwt.encode(user.id, process.env.SECRET)
-  );
+User.signUp = async function(userData) {
+  try {
+    const newUser = await User.create(userData);
+    if (userData.familyCode) {
+      const family = await db
+        .model('family')
+        .findOne({ where: { code: userData.familyCode } });
+      await newUser.update({ familyId: family.id });
+    }
+    return jwt.encode(newUser.id, process.env.SECRET);
+  } catch (e) {
+    throw e;
+  }
 };
 
 module.exports = User;
