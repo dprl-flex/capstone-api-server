@@ -178,4 +178,10 @@ User.exchangeTokenForUser = function(token) {
   });
 };
 
+User.signUp = function(userData) {
+  return this.create(userData).then(user =>
+    jwt.encode(user.id, process.env.SECRET)
+  );
+};
+
 module.exports = User;

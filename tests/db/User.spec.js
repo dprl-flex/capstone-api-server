@@ -145,4 +145,21 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
+  it('Can create a new user and return a token for that user', done => {
+    const newUser = {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      email: faker.internet.email(),
+      age: 20,
+      imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
+      password: 'P@ssword1',
+    };
+    User.signUp(newUser)
+      .then(token => User.exchangeTokenForUser(token))
+      .then(user => {
+        expect(user.email.toLowerCase()).to.equal(newUser.email.toLowerCase());
+        done();
+      })
+      .catch(e => done(e));
+  });
 });
