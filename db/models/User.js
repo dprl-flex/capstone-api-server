@@ -186,6 +186,9 @@ User.signUp = async function(userData) {
         .model('family')
         .findOne({ where: { code: userData.familyCode } });
       await newUser.update({ familyId: family.id });
+    } else if (userData.family) {
+      const family = await db.model('family').create(userData.family);
+      await newUser.update({ familyId: family.id });
     }
     return jwt.encode(newUser.id, process.env.SECRET);
   } catch (e) {

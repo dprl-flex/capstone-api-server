@@ -180,4 +180,22 @@ describe('User database model', () => {
     const created = await User.exchangeTokenForUser(createdToken);
     expect(created.familyId).to.equal(family.id);
   });
+  it('Can create a user, and a new family for that user', done => {
+    const newUser = {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      email: faker.internet.email(),
+      age: 20,
+      imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
+      password: 'P@ssword1',
+    };
+    newUser.family = { name: newUser.lastName, code: faker.random.uuid() };
+    User.signUp(newUser)
+      .then(token => User.exchangeTokenForUser(token))
+      .then(created => {
+        expect(created.familyId).to.be.ok;
+        done();
+      })
+      .catch(e => done(e));
+  });
 });
