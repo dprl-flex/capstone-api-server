@@ -77,4 +77,24 @@ describe('User Routes', () => {
       expect(userResponse.body.id).to.equal(userMap[0].id);
     });
   });
+  describe('POST /api/users', () => {
+    it('can create a user and return the token for that user', async () => {
+      const newUser = {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        email: faker.internet.email(),
+        age: 20,
+        imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
+        password: 'P@ssword1',
+      };
+      const response = await agent.post('/api/users').send(newUser);
+      const token = response.text;
+      const created = await agent
+        .get('/api/users/authed')
+        .set({ authorization: token });
+      expect(created.body.email.toLowerCase()).to.equal(
+        newUser.email.toLowerCase()
+      );
+    });
+  });
 });

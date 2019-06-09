@@ -35,8 +35,8 @@ router.get('/:id', (req, res, next) => {
 
 //create new user
 router.post('/', (req, res, next) => {
-  User.create(req.body)
-    .then(user => res.send(user))
+  User.signUp(req.body)
+    .then(token => res.send(token))
     .catch(next);
 });
 
