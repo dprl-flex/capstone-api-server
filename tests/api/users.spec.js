@@ -4,7 +4,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const app = require('../../server').app;
 const agent = require('supertest')(app);
-const { User } = require('../../db');
+const { User, Family } = require('../../db');
 const faker = require('faker');
 const jwt = require('jwt-simple');
 
@@ -95,6 +95,44 @@ describe('User Routes', () => {
       expect(created.body.email.toLowerCase()).to.equal(
         newUser.email.toLowerCase()
       );
+    });
+    it('can assign a family id to the new user if code is entered', async () => {
+      const newUser = {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        email: faker.internet.email(),
+        age: 20,
+        imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
+        password: 'P@ssword1',
+      };
+      const family = await Family.create({
+        name: newUser.lastName,
+        code: faker.random.uuid(),
+      });
+      newUser.familyCode = family.code;
+      const response = await agent.post('/api/users').send(newUser);
+      const token = response.text;
+      const created = await agent
+        .get('/api/users/authed')
+        .set({ authorization: token });
+      expect(created.body.familyId).to.equal(family.id);
+    });
+    it('can create and assign a new family to a new user', async () => {
+      const newUser = {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        email: faker.internet.email(),
+        age: 20,
+        imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
+        password: 'P@ssword1',
+      };
+      newUser.family = { name: newUser.lastName, code: faker.random.uuid() };
+      const response = await agent.post('/api/users').send(newUser);
+      const token = response.text;
+      const created = await agent
+        .get('/api/users/authed')
+        .set({ authorization: token });
+      expect(created.body.familyId).to.be.ok;
     });
   });
 });
