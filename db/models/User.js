@@ -1,5 +1,6 @@
 const db = require('../db');
 const { Sequelize } = db;
+const Op = Sequelize.Op;
 const bcrypt = require('bcrypt');
 const jwt = require('jwt-simple');
 
@@ -178,6 +179,33 @@ User.exchangeTokenForUser = function(token) {
   });
 };
 
+User.prototype.createRelationships = function() {
+  return User.findAll({
+    where: { familyId: this.familyId, id: { [Op.not]: this.id } },
+  }).then(members => {
+    if (members.length) {
+      return Promise.all(
+        members.map(member => {
+          return Promise.all([
+            db.model('relationship').create({
+              userId: this.id,
+              RelationshipId: member.id,
+              type: 'relative',
+              status: 0.5,
+            }),
+            db.model('relationship').create({
+              userId: member.id,
+              RelationshipId: this.id,
+              type: 'relative',
+              status: 0.5,
+            }),
+          ]);
+        })
+      );
+    }
+  });
+};
+
 User.signUp = async function(userData) {
   try {
     const newUser = await User.create(userData);
@@ -190,6 +218,7 @@ User.signUp = async function(userData) {
       const family = await db.model('family').create(userData.family);
       await newUser.update({ familyId: family.id });
     }
+    await newUser.createRelationships();
     return jwt.encode(newUser.id, process.env.SECRET);
   } catch (e) {
     throw e;
