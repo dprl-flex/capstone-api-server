@@ -4,7 +4,7 @@ const faker = require('faker');
 const jwt = require('jwt-simple');
 
 describe('User database model', () => {
-  it('Can create a user with the necessary fields entered', done => {
+  xit('Can create a user with the necessary fields entered', done => {
     User.create({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -28,7 +28,7 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  it('Throws an error if a required field is blank', done => {
+  xit('Throws an error if a required field is blank', done => {
     User.create({
       firstName: faker.name.firstName(),
       isAdmin: true,
@@ -44,7 +44,7 @@ describe('User database model', () => {
       })
       .catch(e => done());
   });
-  it('Throws an error if a password does not meet the complexity and length requirements', done => {
+  xit('Throws an error if a password does not meet the complexity and length requirements', done => {
     User.create({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -61,7 +61,7 @@ describe('User database model', () => {
       })
       .catch(() => done());
   });
-  it('will not send the password when using default scope', done => {
+  xit('will not send the password when using default scope', done => {
     User.findOne()
       .then(user => {
         expect(user.password).not.to.be.ok;
@@ -69,7 +69,7 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  it('will send email and password when using login scope', done => {
+  xit('will send email and password when using login scope', done => {
     User.scope('login')
       .findOne()
       .then(user => {
@@ -79,7 +79,7 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  it('hashes the password when the user is created', done => {
+  xit('hashes the password when the user is created', done => {
     User.create({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -97,7 +97,7 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  it('can log a user in, and get back the correct token', done => {
+  xit('can log a user in, and get back the correct token', done => {
     User.create({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -116,7 +116,7 @@ describe('User database model', () => {
       )
       .catch(e => done(e));
   });
-  it('Can ignores the case of the email address', done => {
+  xit('Can ignores the case of the email address', done => {
     User.create({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -134,7 +134,7 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  it('Can send back user data based on a token', done => {
+  xit('Can send back user data based on a token', done => {
     User.findOne()
       .then(user => {
         const token = jwt.encode(user.id, process.env.SECRET);
@@ -145,7 +145,7 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  it('Can create a new user and return a token for that user', done => {
+  xit('Can create a new user and return a token for that user', done => {
     const newUser = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -162,7 +162,7 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  it('Can create a user and assign them to a family if user enters a family code', async () => {
+  xit('Can create a user and assign them to a family if user enters a family code', async () => {
     const newUser = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -180,7 +180,7 @@ describe('User database model', () => {
     const created = await User.exchangeTokenForUser(createdToken);
     expect(created.familyId).to.equal(family.id);
   });
-  it('Can create a user, and a new family for that user', done => {
+  xit('Can create a user, and a new family for that user', done => {
     const newUser = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -197,5 +197,22 @@ describe('User database model', () => {
         done();
       })
       .catch(e => done(e));
+  });
+  it('Can create a user, then login as that user', async () => {
+    const newUser = {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      email: faker.internet.email(),
+      age: 20,
+      imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
+      password: 'P@ssword1',
+    };
+    newUser.family = { name: newUser.lastName, code: faker.random.uuid() };
+    const createdToken = await User.signUp(newUser);
+    const authedToken = await User.authenticate(
+      newUser.email,
+      newUser.password
+    );
+    expect(authedToken).to.equal(createdToken);
   });
 });

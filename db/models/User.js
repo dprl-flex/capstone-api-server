@@ -129,6 +129,7 @@ const User = db.define(
     },
     hooks: {
       beforeSave: function(user) {
+        console.log('PREHASHED', user.password);
         return bcrypt.hash(user.password, 5).then(hash => {
           user.password = hash;
           user.email = user.email.toLowerCase();
@@ -143,6 +144,7 @@ const User = db.define(
 );
 
 User.authenticate = function(email, password) {
+  console.log('ARGS', email, password);
   email = email.toLowerCase();
   let _user;
   return this.scope('login')
@@ -216,7 +218,7 @@ User.signUp = async function(userData) {
       await newUser.update({ familyId: family.id });
     } else if (userData.family) {
       const family = await db.model('family').create(userData.family);
-      await newUser.update({ familyId: family.id });
+      await newUser.setFamily(family);
     }
     await newUser.createRelationships();
     return jwt.encode(newUser.id, process.env.SECRET);
