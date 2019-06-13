@@ -129,7 +129,6 @@ const User = db.define(
     },
     hooks: {
       beforeSave: function(user) {
-        console.log('PREHASHED', user.password);
         return bcrypt.hash(user.password, 5).then(hash => {
           user.password = hash;
           user.email = user.email.toLowerCase();
@@ -144,7 +143,6 @@ const User = db.define(
 );
 
 User.authenticate = function(email, password) {
-  console.log('ARGS', email, password);
   email = email.toLowerCase();
   let _user;
   return this.scope('login')
