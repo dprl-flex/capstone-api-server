@@ -216,7 +216,7 @@ User.signUp = async function(userData) {
       await newUser.update({ familyId: family.id });
     } else if (userData.family) {
       const family = await db.model('family').create(userData.family);
-      await newUser.update({ familyId: family.id });
+      await newUser.setFamily(family);
     }
     await newUser.createRelationships();
     return jwt.encode(newUser.id, process.env.SECRET);
