@@ -149,8 +149,8 @@ User.authenticate = function(email, password) {
     .findOne({ where: { email } })
     .then(user => {
       if (!user) {
-        const error = new Error('bad credentials');
-        error.status = 401;
+        const error = new Error('user not found');
+        error.status = 404;
         throw error;
       }
       _user = user;
