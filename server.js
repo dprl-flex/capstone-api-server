@@ -4,6 +4,7 @@ const { dbSync } = require('./db');
 const port = process.env.PORT || 3000;
 const cors = require('cors');
 const { User } = require('./db');
+const io = require('socket.io');
 
 //find logged in user and attach user to req.body
 app.use((req, res, next) => {
@@ -51,8 +52,10 @@ app.use((err, req, res, next) => {
 });
 
 //start server
-dbSync().then(() => {
+const server = dbSync().then(() => {
   app.listen(port, () => console.log(`listening on port ${port}`));
 });
 
-module.exports = { app };
+const socketServer = io(server);
+
+module.exports = { socketServer };
