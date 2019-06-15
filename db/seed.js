@@ -7,7 +7,7 @@ const {
   Choice,
   Event,
   Assigned,
-  Vote
+  Vote,
 } = require('./models');
 const { dbSync } = require('./index');
 
@@ -17,7 +17,7 @@ dbSync(true)
       const createFamily = () => {
         return Family.create({
           name: 'Marx',
-          code: 'MarxBros'
+          code: 'MarxBros',
         });
       };
 
@@ -31,24 +31,24 @@ dbSync(true)
             firstName: 'Jane',
             lastName: 'Doe',
             isAdmin: true,
-            age: 30,
+            birthday: new Date('1/1/1989'),
             imgUrl: faker.internet.avatar(),
             email: 'janedoe@email.com',
             password: 'p@ssWord!2',
-            familyId: family.id
+            familyId: family.id,
           }),
           ...famCount.map((v, idx) =>
             User.create({
               firstName: faker.name.firstName(),
               lastName,
               isAdmin: idx < 2,
-              age: idx < 2 ? 30 : 12,
+              birthday: new Date('1/1/1989'),
               imgUrl: faker.internet.avatar(),
               email: faker.internet.email(),
               password: 'tH1s1sVal1d!',
-              familyId: family.id
+              familyId: family.id,
             })
-          )
+          ),
         ]);
       };
 
@@ -60,21 +60,21 @@ dbSync(true)
             ownerId: users[0].id,
             title: 'Tennis Game',
             deadline: new Date('2019-06-08T12:00:00'),
-            category: 'event'
+            category: 'event',
           }),
           Event.create({
             ownerId: users[0].id,
             title: 'Clean the Bathroom',
             description: 'Clean the floors, sink, and shower!!',
             deadline: new Date('2019-06-15T00:00:00'),
-            category: 'chore'
+            category: 'chore',
           }),
           Event.create({
             ownerId: users[3].id,
             title: 'Choir Recital',
             deadline: new Date('2019-07-18T17:30:00'),
-            category: 'event'
-          })
+            category: 'event',
+          }),
         ]);
       };
 
@@ -85,63 +85,63 @@ dbSync(true)
           Relationship.create({
             userId: users[0].id,
             RelationshipId: users[1].id,
-            type: 'spouse'
+            type: 'spouse',
           }),
           Relationship.create({
             userId: users[0].id,
             RelationshipId: users[3].id,
-            type: 'child'
+            type: 'child',
           }),
           Relationship.create({
             userId: users[0].id,
             RelationshipId: users[4].id,
-            type: 'child'
+            type: 'child',
           }),
           Relationship.create({
             userId: users[1].id,
             RelationshipId: users[0].id,
-            type: 'spouse'
+            type: 'spouse',
           }),
           Relationship.create({
             userId: users[1].id,
             RelationshipId: users[3].id,
-            type: 'child'
+            type: 'child',
           }),
           Relationship.create({
             userId: users[1].id,
             RelationshipId: users[4].id,
-            type: 'child'
+            type: 'child',
           }),
           Relationship.create({
             userId: users[3].id,
             RelationshipId: users[0].id,
-            type: 'parent'
+            type: 'parent',
           }),
           Relationship.create({
             userId: users[3].id,
             RelationshipId: users[1].id,
-            type: 'parent'
+            type: 'parent',
           }),
           Relationship.create({
             userId: users[3].id,
             RelationshipId: users[4].id,
-            type: 'sibling'
+            type: 'sibling',
           }),
           Relationship.create({
             userId: users[4].id,
             RelationshipId: users[0].id,
-            type: 'parent'
+            type: 'parent',
           }),
           Relationship.create({
             userId: users[4].id,
             RelationshipId: users[1].id,
-            type: 'parent'
+            type: 'parent',
           }),
           Relationship.create({
             userId: users[4].id,
             RelationshipId: users[3].id,
-            type: 'sibling'
-          })
+            type: 'sibling',
+          }),
         ]);
       };
 
@@ -152,23 +152,23 @@ dbSync(true)
           Poll.create({
             ownerId: users[0].id,
             text: "What's for dinner?",
-            familyId: family.id
+            familyId: family.id,
           }),
           Poll.create({
             ownerId: users[1].id,
             text: 'What movie should we watch?',
-            familyId: family.id
+            familyId: family.id,
           }),
           Poll.create({
             ownerId: users[3].id,
             text: 'What am I getting for Christmas?',
-            familyId: family.id
+            familyId: family.id,
           }),
           Poll.create({
             ownerId: users[4].id,
             text: "Can we get McDonald's?",
-            familyId: family.id
-          })
+            familyId: family.id,
+          }),
         ]);
       };
 
@@ -178,36 +178,36 @@ dbSync(true)
         return Promise.all([
           Choice.create({
             text: 'Chicken',
-            pollId: polls[0].id
+            pollId: polls[0].id,
           }),
           Choice.create({
             text: 'Steak',
-            pollId: polls[0].id
+            pollId: polls[0].id,
           }),
           Choice.create({
             text: 'A Simple Favor',
-            pollId: polls[1].id
+            pollId: polls[1].id,
           }),
           Choice.create({
             text: 'Fight Club',
-            pollId: polls[1].id
+            pollId: polls[1].id,
           }),
           Choice.create({
             text: 'Coal',
-            pollId: polls[2].id
+            pollId: polls[2].id,
           }),
           Choice.create({
             text: 'A Barbie Dream House',
-            pollId: polls[2].id
+            pollId: polls[2].id,
           }),
           Choice.create({
             text: 'Yes',
-            pollId: polls[3].id
+            pollId: polls[3].id,
           }),
           Choice.create({
             text: 'No',
-            pollId: polls[3].id
-          })
+            pollId: polls[3].id,
+          }),
         ]);
       };
 
@@ -217,8 +217,8 @@ dbSync(true)
         return Promise.all([
           Assigned.create({
             eventId: events[2].id,
-            userId: polls[0].ownerId
-          })
+            userId: polls[0].ownerId,
+          }),
         ]);
       };
 
@@ -229,28 +229,28 @@ dbSync(true)
           Vote.create({
             userId: users[0].id,
             choiceId: choices[2].id,
-            pollId: polls[1].id
+            pollId: polls[1].id,
           }),
           Vote.create({
             userId: users[1].id,
             choiceId: choices[3].id,
-            pollId: polls[1].id
+            pollId: polls[1].id,
           }),
           Vote.create({
             userId: users[2].id,
             choiceId: choices[2].id,
-            pollId: polls[1].id
+            pollId: polls[1].id,
           }),
           Vote.create({
             userId: users[3].id,
             choiceId: choices[2].id,
-            pollId: polls[1].id
+            pollId: polls[1].id,
           }),
           Vote.create({
             userId: users[4].id,
             choiceId: choices[2].id,
-            pollId: polls[1].id
-          })
+            pollId: polls[1].id,
+          }),
         ]);
       };
 

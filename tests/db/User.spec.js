@@ -9,7 +9,7 @@ describe('User database model', () => {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       isAdmin: true,
-      age: 36,
+      birthday: new Date('1/1/1996'),
       email: faker.internet.email(),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
@@ -20,7 +20,7 @@ describe('User database model', () => {
         expect(keys.includes('firstName')).to.equal(true);
         expect(keys.includes('lastName')).to.equal(true);
         expect(keys.includes('isAdmin')).to.equal(true);
-        expect(keys.includes('age')).to.equal(true);
+        expect(keys.includes('birthday')).to.equal(true);
         expect(keys.includes('email')).to.equal(true);
         expect(keys.includes('imgUrl')).to.equal(true);
         expect(keys.includes('password')).to.equal(true);
@@ -32,7 +32,7 @@ describe('User database model', () => {
     User.create({
       firstName: faker.name.firstName(),
       isAdmin: true,
-      age: 36,
+      birthday: new Date('1/1/1996'),
       email: faker.internet.email(),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
@@ -49,7 +49,7 @@ describe('User database model', () => {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       isAdmin: true,
-      age: 36,
+      birthday: new Date('1/1/1996'),
       email: faker.internet.email(),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
@@ -79,12 +79,12 @@ describe('User database model', () => {
       })
       .catch(e => done(e));
   });
-  xit('hashes the password when the user is created', done => {
+  it('hashes the password when the user is created', done => {
     User.create({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       isAdmin: true,
-      age: 36,
+      birthday: new Date('1/1/1996'),
       email: faker.internet.email(),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
@@ -102,7 +102,7 @@ describe('User database model', () => {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       isAdmin: true,
-      age: 36,
+      birthday: new Date('1/1/1996'),
       email: faker.internet.email(),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
@@ -121,7 +121,7 @@ describe('User database model', () => {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       isAdmin: true,
-      age: 36,
+      birthday: new Date('1/1/1996'),
       email: faker.internet.email(),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
@@ -150,7 +150,7 @@ describe('User database model', () => {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
-      age: 20,
+      birthday: new Date('1/1/1999'),
       imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
       password: 'P@ssword1',
     };
@@ -167,7 +167,7 @@ describe('User database model', () => {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
-      age: 20,
+      birthday: new Date('1/1/1999'),
       imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
       password: 'P@ssword1',
     };
@@ -185,7 +185,7 @@ describe('User database model', () => {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
-      age: 20,
+      birthday: new Date('1/1/1999'),
       imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
       password: 'P@ssword1',
     };
@@ -203,7 +203,7 @@ describe('User database model', () => {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
-      age: 20,
+      birthday: new Date('1/1/1999'),
       imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
       password: 'P@ssword1',
     };

@@ -7,7 +7,7 @@ describe('Poll database model', () => {
   const userData = {
     firstName: 'Bob',
     lastName: 'Smith',
-    age: 22,
+    birthday: new Date('1/1/1996'),
     imgUrl:
       'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
     password: 'P@ssword1',
@@ -46,7 +46,7 @@ describe('Choice database Model', () => {
   const userData = {
     firstName: 'Bob',
     lastName: 'Smith',
-    age: 22,
+    birthday: new Date('1/1/1996'),
     imgUrl:
       'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
     email: 'bobsmith@email.com',
@@ -93,7 +93,7 @@ describe('Vote database model', () => {
     {
       firstName: 'Bob',
       lastName: 'Smith',
-      age: 22,
+      birthday: new Date('1/1/1996'),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
       password: 'P@ssword1',
@@ -101,7 +101,7 @@ describe('Vote database model', () => {
     {
       firstName: 'Jane',
       lastName: 'Doe',
-      age: 35,
+      birthday: new Date('1/1/1996'),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
       password: 'P@ssword1',

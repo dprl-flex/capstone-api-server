@@ -48,28 +48,6 @@ const User = db.define(
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
-    age: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      validate: {
-        isInt: {
-          args: true,
-          msg: 'Age must be an integer.',
-        },
-        notEmpty: {
-          args: true,
-          msg: 'User must have an age.',
-        },
-        min: {
-          args: [0],
-          msg: 'Age must be a positive integer.',
-        },
-        max: {
-          args: 120,
-          msg: 'User age should be less than 120 years.',
-        },
-      },
-    },
     imgUrl: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -114,6 +92,20 @@ const User = db.define(
               'Passwords must be at least 8 characters long, and contain a mix of lowercase/uppercase letters, numbers and special characters.'
             );
           }
+        },
+      },
+    },
+    birthday: {
+      type: Sequelize.DATE,
+      allowNull: false,
+      validate: {
+        isDate: {
+          args: true,
+          msg: 'Please enter a valid date for birthday',
+        },
+        notNull: {
+          args: true,
+          msg: 'Birthday cannot be null',
         },
       },
     },
