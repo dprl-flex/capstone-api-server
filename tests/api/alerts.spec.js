@@ -16,6 +16,7 @@ describe('Alerts API', () => {
           birthday: new Date('1/1/1990'),
           email: faker.internet.email(),
           imgUrl: faker.internet.avatar(),
+          phone: '2014466203',
           password: 'P@ssword1',
         })
       )

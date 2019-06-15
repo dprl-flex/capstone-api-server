@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { Alert } = require('../db');
+const { Alert, User } = require('../db');
+const twilioClient = require('./twilio');
 
 //get all alerts for a user
 router.get('/user/:id', (req, res, next) => {
@@ -16,9 +17,19 @@ router.get('/:id', (req, res, next) => {
 });
 
 //create alert
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
+  const user = await User.findByPk(req.body.userId);
   Alert.create(req.body)
-    .then(alert => res.status(201).send(alert))
+    .then(alert => {
+      if (user.phone) {
+        twilioClient.messages.create({
+          body: alert.message,
+          from: '+12013714172',
+          to: `+1${user.phone}`,
+        });
+      }
+      res.status(201).send(alert);
+    })
     .catch(next);
 });
 
