@@ -7,6 +7,7 @@ const agent = require('supertest')(app);
 const { User, Family } = require('../../db');
 const faker = require('faker');
 const jwt = require('jwt-simple');
+const image = require('./image');
 
 describe('User Routes', () => {
   let userMap;
@@ -15,8 +16,7 @@ describe('User Routes', () => {
       firstName: 'Bob',
       lastName: 'Smith',
       birthday: new Date('1/1/1990'),
-      imgUrl:
-        'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
+      imgUrl: image,
       password: 'P@ssword1',
     },
     {
