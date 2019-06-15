@@ -6,6 +6,9 @@ const cors = require('cors');
 const { User } = require('./db');
 const io = require('socket.io');
 
+let room;
+let conUser;
+
 //find logged in user and attach user to req.body
 app.use((req, res, next) => {
   if (!req.headers.authorization) {
@@ -14,6 +17,10 @@ app.use((req, res, next) => {
   User.exchangeTokenForUser(req.headers.authorization)
     .then(user => {
       req.user = user;
+      conUser = req.user.id;
+      if (req.user.familyId) {
+        room = req.user.familyId;
+      }
       next();
     })
     .catch(next);
@@ -56,12 +63,15 @@ const server = dbSync().then(() => {
   app.listen(port, () => console.log(`listening on port ${port}`));
 });
 
-// const server = app.listen(port, () => console.log(`listening on port ${port}`));
-
-// dbSync().then(() => {
-//   app.listen(port, () => console.log(`listening on port ${port}`));
-// });
-
 const socketServer = io(server);
+
+socketServer.on('connection', socket => {
+  socket.join(conUser);
+  socket.to(conUser).emit(`connected to ${conUser}`);
+  if (room) {
+    socket.join(room);
+    socket.to(room).emit('connected', `connected to ${room}`);
+  }
+});
 
 module.exports = { app, socketServer };
