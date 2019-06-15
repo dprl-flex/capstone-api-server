@@ -7,6 +7,7 @@ const Vote = require('./Vote');
 const Mood = require('./Mood');
 const Event = require('./Event');
 const Assigned = require('./Assigned');
+const Alert = require('./Alert');
 
 Poll.belongsTo(User, { as: 'Owner', foreignKey: 'ownerId' });
 User.hasMany(Poll, { as: 'Owner', foreignKey: 'ownerId' });
@@ -38,6 +39,9 @@ User.belongsToMany(User, { as: 'Relationship', through: Relationship });
 Mood.belongsTo(User);
 User.hasMany(Mood);
 
+Alert.belongsTo(User);
+User.hasMany(Alert);
+
 module.exports = {
   User,
   Family,
@@ -47,5 +51,6 @@ module.exports = {
   Vote,
   Mood,
   Event,
-  Assigned
+  Assigned,
+  Alert,
 };

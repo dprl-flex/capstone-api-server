@@ -7,6 +7,9 @@ const {
   Choice,
   Vote,
   Mood,
+  Event,
+  Assigned,
+  Alert,
 } = require('./models');
 
 const dbSync = (force = false) => {
@@ -23,4 +26,7 @@ module.exports = {
   Choice,
   Vote,
   Mood,
+  Event,
+  Assigned,
+  Alert,
 };

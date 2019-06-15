@@ -10,4 +10,6 @@ router.use('/moods', require('./moods'));
 
 router.use('/events', require('./events'));
 
+router.use('/alerts', require('./alerts'));
+
 module.exports = router;
