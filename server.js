@@ -51,15 +51,17 @@ app.use((err, req, res, next) => {
   res.send(err.message || 'Internal server error');
 });
 
-//start server
-// const server = dbSync().then(() => {
-//   app.listen(port, () => console.log(`listening on port ${port}`));
-// });
-
-dbSync().then(() => {
+// start server
+const server = dbSync().then(() => {
   app.listen(port, () => console.log(`listening on port ${port}`));
 });
 
-// const socketServer = io(server);
+// const server = app.listen(port, () => console.log(`listening on port ${port}`));
 
-module.exports = { app };
+// dbSync().then(() => {
+//   app.listen(port, () => console.log(`listening on port ${port}`));
+// });
+
+const socketServer = io(server);
+
+module.exports = { app, socketServer };
