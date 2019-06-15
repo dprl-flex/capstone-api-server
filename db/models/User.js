@@ -98,6 +98,7 @@ const User = db.define(
     birthday: {
       type: Sequelize.DATE,
       allowNull: false,
+      defaultValue: new Date('1/1/1990'),
       validate: {
         isDate: {
           args: true,
