@@ -56,10 +56,6 @@ const User = db.define(
           args: true,
           msg: 'User must have a profile image URL.',
         },
-        isUrl: {
-          args: true,
-          msg: 'Please enter a valid image URL.',
-        },
       },
     },
     email: {
