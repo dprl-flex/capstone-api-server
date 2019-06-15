@@ -21,11 +21,13 @@ router.post('/', async (req, res, next) => {
   const user = await User.findByPk(req.body.userId);
   Alert.create(req.body)
     .then(alert => {
-      twilioClient.messages.create({
-        body: alert.message,
-        from: '+12013714172',
-        to: `+1${user.phone}`,
-      });
+      if (user.phone) {
+        twilioClient.messages.create({
+          body: alert.message,
+          from: '+12013714172',
+          to: `+1${user.phone}`,
+        });
+      }
       res.status(201).send(alert);
     })
     .catch(next);
