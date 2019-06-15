@@ -15,7 +15,7 @@ describe('Polling routes', async () => {
     {
       firstName: 'Bob',
       lastName: 'Smith',
-      age: 22,
+      birthday: new Date('1/1/1990'),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
       password: 'P@ssword1',
@@ -23,7 +23,7 @@ describe('Polling routes', async () => {
     {
       firstName: 'Jane',
       lastName: 'Doe',
-      age: 35,
+      birthday: new Date('1/1/1990'),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
       password: 'P@ssword1',
@@ -50,7 +50,9 @@ describe('Polling routes', async () => {
   describe('GET /api/polls', () => {
     it('retrieves all polls', async () => {
       const response = await agent.get('/api/polls').expect(200);
-      expect(!!response.body.find(poll => poll.id === pollMap[0].id)).to.equal(true);
+      expect(!!response.body.find(poll => poll.id === pollMap[0].id)).to.equal(
+        true
+      );
     });
   });
   describe('POST /api/polls', () => {

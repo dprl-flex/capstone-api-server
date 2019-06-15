@@ -13,7 +13,7 @@ describe('Alerts API', () => {
         User.create({
           firstName: faker.name.firstName(),
           lastName: faker.name.lastName(),
-          age: 30,
+          birthday: new Date('1/1/1990'),
           email: faker.internet.email(),
           imgUrl: faker.internet.avatar(),
           password: 'P@ssword1',

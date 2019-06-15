@@ -14,7 +14,7 @@ describe('User Routes', () => {
     {
       firstName: 'Bob',
       lastName: 'Smith',
-      age: 22,
+      birthday: new Date('1/1/1990'),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
       password: 'P@ssword1',
@@ -22,7 +22,7 @@ describe('User Routes', () => {
     {
       firstName: 'Jane',
       lastName: 'Doe',
-      age: 35,
+      birthday: new Date('1/1/1990'),
       imgUrl:
         'https://m.media-amazon.com/images/M/MV5BODAyMGNkNWItYmFjZC00MTA5LTg3ZGItZWQ0MTIxNTg2N2JmXkEyXkFqcGdeQXVyNDQzMDg4Nzk@._V1_.jpg',
       password: 'P@ssword1',
@@ -83,7 +83,7 @@ describe('User Routes', () => {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         email: faker.internet.email(),
-        age: 20,
+        birthday: new Date('1/1/1990'),
         imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
         password: 'P@ssword1',
       };
@@ -101,7 +101,7 @@ describe('User Routes', () => {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         email: faker.internet.email(),
-        age: 20,
+        birthday: new Date('1/1/1990'),
         imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
         password: 'P@ssword1',
       };
@@ -122,7 +122,7 @@ describe('User Routes', () => {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         email: faker.internet.email(),
-        age: 20,
+        birthday: new Date('1/1/1990'),
         imgUrl: 'http://www.gstatic.com/tv/thumb/persons/49256/49256_v9_ba.jpg',
         password: 'P@ssword1',
       };
