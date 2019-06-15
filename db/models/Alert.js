@@ -7,7 +7,7 @@ const Alert = db.define('alert', {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
   },
-  messsage: {
+  message: {
     type: Sequelize.TEXT,
     allowNull: false,
     validate: {
@@ -23,9 +23,11 @@ const Alert = db.define('alert', {
   },
   alertType: {
     type: Sequelize.ENUM('event', 'poll', 'user'),
+    allowNull: false,
   },
   targetId: {
     type: Sequelize.UUID,
+    allowNull: false,
     validate: {
       notNull: {
         args: true,
@@ -38,10 +40,10 @@ const Alert = db.define('alert', {
     },
   },
   active: {
-    type: Sequelize.BOOL,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: true,
   },
 });
 
-export default Alert;
+module.exports = Alert;

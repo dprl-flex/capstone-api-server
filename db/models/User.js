@@ -21,7 +21,7 @@ const User = db.define(
           msg: 'User must have a first name.',
         },
         lettersOnly(firstName) {
-          const regexp = /^[A-Za-z]+$/;
+          const regexp = /^[A-Za-z\s]+$/;
           if (!regexp.test(firstName)) {
             throw new Error('First name must consist only of letters.');
           }
@@ -37,7 +37,7 @@ const User = db.define(
           msg: 'User must have a last name.',
         },
         lettersOnly(lastName) {
-          const regexp = /^[A-Za-z]+$/;
+          const regexp = /^[A-Za-z\s]+$/;
           if (!regexp.test(lastName)) {
             throw new Error('Last name must consist only of letters.');
           }
@@ -213,7 +213,7 @@ User.signUp = async function(userData) {
       const family = await db
         .model('family')
         .findOne({ where: { code: userData.familyCode } });
-      await newUser.update({ familyId: family.id });
+      await newUser.setFamily(family);
     } else if (userData.family) {
       const family = await db.model('family').create(userData.family);
       await newUser.setFamily(family);
