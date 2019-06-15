@@ -106,6 +106,16 @@ const User = db.define(
         },
       },
     },
+    phone: {
+      type: Sequelize.STRING,
+      validate: {
+        tenDigits(phone) {
+          if (!/^[0-9]+$/.test(phone) || phone.length !== 10) {
+            throw new Error('Phone number must be 10 digits');
+          }
+        },
+      },
+    },
   },
   {
     defaultScope: {
@@ -126,6 +136,15 @@ const User = db.define(
       },
       afterCreate: function(user) {
         return db.model('mood').create({ userId: user.id, value: 0.5 });
+      },
+      beforeValidate: function(user) {
+        if (user.phone) {
+          user.phone = user.phone
+            .split('')
+            .filter(char => /^[0-9]/.test(char))
+            .join('');
+        }
+        return user;
       },
     },
   }
