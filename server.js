@@ -52,10 +52,14 @@ app.use((err, req, res, next) => {
 });
 
 //start server
-const server = dbSync().then(() => {
+// const server = dbSync().then(() => {
+//   app.listen(port, () => console.log(`listening on port ${port}`));
+// });
+
+dbSync().then(() => {
   app.listen(port, () => console.log(`listening on port ${port}`));
 });
 
-const socketServer = io(server);
+// const socketServer = io(server);
 
-module.exports = { socketServer };
+module.exports = { app };

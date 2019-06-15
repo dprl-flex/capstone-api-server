@@ -49,7 +49,7 @@ const User = db.define(
       defaultValue: false,
     },
     imgUrl: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
       validate: {
         notEmpty: {
