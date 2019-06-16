@@ -38,7 +38,7 @@ router.post('/', (req, res, next) => {
   User.signUp(req.body)
     .then(token => res.send(token))
     .catch(e => {
-      console.log('USER SIGNUP ERROR', e);
+      console.log('USER SIGNUP ERROR', e, req.body);
       next(e);
     });
 });
