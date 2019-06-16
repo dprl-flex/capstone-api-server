@@ -54,6 +54,17 @@ router.get('/:id/relationships', (req, res, next) => {
     .catch(next);
 });
 
+//get relationships to a user
+router.get('/:id/relatives/relationships', (req, res, next) => {
+  Relationship.findAll({
+    where: {
+      RelationshipId: req.params.id
+    }
+  })
+    .then(relationships => res.send(relationships))
+    .catch(next)
+})
+
 //update relationship status
 router.put('/:id/relationships/status', (req, res, next) => {
   const { RelationshipId, diff } = req.body;
