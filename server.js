@@ -67,10 +67,9 @@ const socketServer = io(server);
 
 socketServer.on('connect', socket => {
   socket.join(conUser);
-  socket.to(conUser).emit(`connected to ${conUser}`);
+  socket.to(conUser).emit(`connect`);
   if (room) {
     socket.join(room);
-    socket.to(room).emit('connected', `connected to ${room}`);
   }
   //When a new event is created, send a message to all other users to trigger a fetch events
   socket.on('new_event', () => socket.to(room).broadcast.emit('new_event'));
