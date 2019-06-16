@@ -37,7 +37,10 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   User.signUp(req.body)
     .then(token => res.send(token))
-    .catch(next);
+    .catch(e => {
+      console.log('USER SIGNUP ERROR', e, req.body);
+      next(e);
+    });
 });
 
 //get users relationships
