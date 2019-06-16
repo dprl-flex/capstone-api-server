@@ -65,13 +65,31 @@ const server = dbSync().then(() => {
 
 const socketServer = io(server);
 
-socketServer.on('connection', socket => {
+socketServer.on('connect', socket => {
   socket.join(conUser);
   socket.to(conUser).emit(`connected to ${conUser}`);
   if (room) {
     socket.join(room);
     socket.to(room).emit('connected', `connected to ${room}`);
   }
+  //When a new event is created, send a message to all other users to trigger a fetch events
+  socket.on('new_event', () => socket.to(room).broadcast.emit('new_event'));
+  //location request with a users object { target: [target user's id], requester: [requester's user id] }
+  socket.on('request_loc', users =>
+    socket.to(users.target).emit('request_loc', users.requester)
+  );
+  //location respond with the id of the user who requested it, and the coordinates in an object
+  socket.on('response_location', response =>
+    socket.to(response.requester).emit('response_location', response.coords)
+  );
+  //when a new alert is created use this event to trigger client to fetch alerts
+  socket.on('new_alert', () => socket.to(room).broadcast.emit('new_alert'));
+  //new poll
+  socket.on('new_poll', () => socket.to(room).broadcast.emit('new_poll'));
+  //new vote
+  socket.on('new_vote', () => socket.to(room).broadcast.emit('new_vote'));
+  //poll ended
+  socket.on('poll_ended', () => socket.to(room).broadcast.emit('poll_ended'));
 });
 
 module.exports = { app, socketServer };
