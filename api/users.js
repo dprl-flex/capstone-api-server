@@ -36,8 +36,7 @@ router.get('/:id', (req, res, next) => {
 //create new user
 router.post('/', (req, res, next) => {
   console.log('Family Code', req.body.familyCode);
-  console.log('New Family Code', req.body.newFamilyCode);
-  console.log('New Family Name', req.body.newFamilyName);
+  console.log('New Family', req.body.family);
   User.signUp(req.body)
     .then(token => res.send(token))
     .catch(e => {
