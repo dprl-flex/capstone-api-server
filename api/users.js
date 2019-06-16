@@ -35,6 +35,9 @@ router.get('/:id', (req, res, next) => {
 
 //create new user
 router.post('/', (req, res, next) => {
+  console.log('Family Code', req.body.familyCode);
+  console.log('New Family Code', req.body.newFamilyCode);
+  console.log('New Family Name', req.body.newFamilyName);
   User.signUp(req.body)
     .then(token => res.send(token))
     .catch(e => {
@@ -58,12 +61,12 @@ router.get('/:id/relationships', (req, res, next) => {
 router.get('/:id/relatives/relationships', (req, res, next) => {
   Relationship.findAll({
     where: {
-      RelationshipId: req.params.id
-    }
+      RelationshipId: req.params.id,
+    },
   })
     .then(relationships => res.send(relationships))
-    .catch(next)
-})
+    .catch(next);
+});
 
 //update relationship status
 router.put('/:id/relationships/status', (req, res, next) => {
