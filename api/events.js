@@ -15,8 +15,7 @@ router.get('/user/:id', (req, res, next) => {
     Event.findAll({
         where: {
             ownerId: req.params.id
-        },
-        include: [Assigned]
+        }
     })
         .then(events => res.send(events))
         .catch(next);
