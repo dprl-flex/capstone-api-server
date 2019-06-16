@@ -90,6 +90,10 @@ socketServer.on('connect', socket => {
   socket.on('new_vote', () => socket.to(room).broadcast.emit('new_vote'));
   //poll ended
   socket.on('poll_ended', () => socket.to(room).broadcast.emit('poll_ended'));
+  //new family member
+  socket.on('new_family_member', () =>
+    socket.to(room).broadcast.emit('new_family_member')
+  );
 });
 
 module.exports = { app, socketServer };
