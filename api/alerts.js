@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
     .then(alert => {
       if (user.phone) {
         twilioClient.messages.create({
-          body: `New Alert from Mender: ${alert.body}`,
+          body: `New Alert from Mender: ${alert.message}`,
           from: '+12013714172',
           to: `+1${user.phone}`,
         });
