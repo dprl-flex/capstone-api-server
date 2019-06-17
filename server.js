@@ -66,8 +66,9 @@ const server = dbSync().then(() => {
 const socketServer = io(server);
 
 socketServer.on('connect', socket => {
+  console.log('SOCKET INFO', socket.id, conUser);
   socket.join(conUser);
-  socket.to(conUser).emit(`connect`);
+  socket.to(conUser).emit(`hello`, { message: 'Hi!' });
   if (room) {
     socket.join(room);
   }
