@@ -116,12 +116,10 @@ socketServer.on('connect', async socket => {
     console.log('NEW VOTE SCKET EVENT');
   });
   //poll ended
-  socket.on('poll_ended', () =>
-    socket.to(familyRoom).broadcast.emit('poll_ended')
-  );
+  socket.on('poll_ended', () => socketServer.to(familyRoom).emit('poll_ended'));
   //new family member
   socket.on('new_family_member', () => {
-    socket.to(familyRoom).emit('new_family_member');
+    socketServer.to(familyRoom).emit('new_family_member');
     console.log('NEW FAMILY MEMBER SOCKET EVENT');
   });
 });
