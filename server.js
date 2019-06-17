@@ -59,6 +59,7 @@ app.use((err, req, res, next) => {
 });
 
 // start server
+
 const server = app.listen(port, () => console.log(`listening on port ${port}`));
 
 const socketServer = io(server);
@@ -94,4 +95,4 @@ socketServer.on('connect', socket => {
   );
 });
 
-module.exports = { socketServer };
+module.exports = { socketServer, app };
