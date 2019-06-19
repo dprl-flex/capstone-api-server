@@ -64,38 +64,32 @@ const server = createServer();
 
 const socketServer = io(server);
 
-const promiseToJoin = (socket, room) => {
-  return new Promise((res, rej) => {
-    socket.join(room, () => res(room));
-  });
-};
+// const promiseToJoin = (socket, room) => {
+//   return new Promise((res, rej) => {
+//     socket.join(room, () => res(room));
+//   });
+// };
 
-socketServer.on('connect', async socket => {
-  const token = socket.handshake.headers.authorization;
-  const user = await User.exchangeTokenForUser(token);
-  const [userRoom, familyRoom] = [user.id, user.familyId];
-  await Promise.all([
-    promiseToJoin(socket, userRoom),
-    promiseToJoin(socket, familyRoom),
-  ]);
-  socketServer.to(userRoom).emit('hello', { message: 'HELLO USER!' });
-  socketServer.to(familyRoom).emit('hello', { message: 'HELLO FAMILY!' });
+socketServer.on('connect', socket => {
+  // const token = socket.handshake.headers.authorization;
+  // const user = await User.exchangeTokenForUser(token);
+  // const [userRoom, familyRoom] = [user.id, user.familyId];
+  // await Promise.all([
+  //   promiseToJoin(socket, userRoom),
+  //   promiseToJoin(socket, familyRoom),
+  // ]);
+  socket.emit('hello', { message: 'HELLO USER!' });
+  // socketServer.to(familyRoom).emit('hello', { message: 'HELLO FAMILY!' });
   //When a new event is created, send a message to all other users to trigger a fetch events
-  socket.on('new_event', () =>
-    socketServer.to(familyRoom).broadcast.emit('new_event')
-  );
+  socket.on('new_event', () => socket.emit('new_event'));
   //location request with a users object { target: [target user's id], requester: [requester's user id] }
-  socket.on('request_loc', users => {
-    socketServer
-      .to(users.target)
-      .emit('request_loc', { requester: users.requester });
+  socket.on('request_location', users => {
+    socket.emit('request_location', { requester: users.requester });
     console.log('LOCATION REQUEST SOCKET EVENT', users.target, users.requester);
   });
   //location respond with the id of the user who requested it, and the coordinates in an object
   socket.on('response_location', response => {
-    socketServer
-      .to(response.requester)
-      .emit('response_location', { coords: response.coords });
+    socket.emit('response_location', { coords: response.coords });
     console.log(
       'LOCATION RESPONSE SOCKET EVENT',
       response.requester,
@@ -104,24 +98,24 @@ socketServer.on('connect', async socket => {
   });
   //when a new alert is created use this event to trigger client to fetch alerts
   socket.on('new_alert', () => {
-    socketServer.to(familyRoom).emit('new_alert');
+    socket.emit('new_alert');
     console.log('NEW ALERT SOCKET EVENT');
   });
   //new poll
   socket.on('new_poll', () => {
-    socketServer.to(familyRoom).broadcast.emit('new_poll');
+    socket.broadcast.emit('new_poll');
     console.log('NEW POLL SOCKET EVENT');
   });
   //new vote
   socket.on('new_vote', () => {
-    socketServer.to(familyRoom).emit('new_vote');
+    socket.emit('new_vote');
     console.log('NEW VOTE SCKET EVENT');
   });
   //poll ended
-  socket.on('poll_ended', () => socketServer.to(familyRoom).emit('poll_ended'));
+  socket.on('poll_ended', () => socketServer.emit('poll_ended'));
   //new family member
   socket.on('new_family_member', () => {
-    socketServer.to(familyRoom).emit('new_family_member');
+    socketServer.emit('new_family_member');
     console.log('NEW FAMILY MEMBER SOCKET EVENT');
   });
 });
