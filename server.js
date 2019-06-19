@@ -84,14 +84,15 @@ socketServer.on('connect', socket => {
   socket.on('new_event', () => socket.emit('new_event'));
   //location request with a users object { target: [target user's id], requester: [requester's user id] }
   socket.on('request_location', users => {
-    socket.emit('request_location', { requester: users.requester });
+    socket.broadcast.emit('request_location', users);
     console.log('LOCATION REQUEST SOCKET EVENT', users.target, users.requester);
   });
   //location respond with the id of the user who requested it, and the coordinates in an object
   socket.on('response_location', response => {
-    socket.emit('response_location', { coords: response.coords });
+    socket.broadcast.emit('response_location', response);
     console.log(
       'LOCATION RESPONSE SOCKET EVENT',
+      response.target,
       response.requester,
       response.coords
     );
@@ -108,8 +109,8 @@ socketServer.on('connect', socket => {
   });
   //new vote
   socket.on('new_vote', () => {
-    socket.emit('new_vote');
-    console.log('NEW VOTE SCKET EVENT');
+    socket.broadcast.emit('new_vote');
+    console.log('NEW VOTE SOCKET EVENT');
   });
   //poll ended
   socket.on('poll_ended', () => socketServer.emit('poll_ended'));
