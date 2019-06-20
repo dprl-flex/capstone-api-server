@@ -10,7 +10,7 @@ const {
   Vote,
 } = require('./models');
 const { dbSync } = require('./index');
-const { dave, lauren } = require('./images');
+const { dave, lauren, preston, ruby } = require('./images');
 
 dbSync(true)
   .then(() => {
@@ -48,7 +48,7 @@ dbSync(true)
             firstName: 'Ruby',
             lastName: 'Barry',
             isAdmin: true,
-            imgUrl: lauren,
+            imgUrl: ruby,
             email: 'rubypbarry@gmail.com',
             password: 'p@ssWord!2',
             familyId: family.id,
@@ -57,7 +57,7 @@ dbSync(true)
             firstName: 'Preston',
             lastName: 'Chaplin',
             isAdmin: true,
-            imgUrl: lauren,
+            imgUrl: preston,
             email: 'preston.chaplin@gmail.com',
             password: 'p@ssWord!2',
             familyId: family.id,
