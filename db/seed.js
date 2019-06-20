@@ -99,61 +99,73 @@ dbSync(true)
             userId: users[0].id,
             RelationshipId: users[1].id,
             type: 'spouse',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[0].id,
             RelationshipId: users[2].id,
             type: 'child',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[0].id,
             RelationshipId: users[3].id,
             type: 'child',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[1].id,
             RelationshipId: users[0].id,
             type: 'spouse',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[1].id,
             RelationshipId: users[2].id,
             type: 'child',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[1].id,
             RelationshipId: users[3].id,
             type: 'child',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[2].id,
             RelationshipId: users[0].id,
             type: 'parent',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[2].id,
             RelationshipId: users[1].id,
             type: 'parent',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[2].id,
             RelationshipId: users[3].id,
             type: 'sibling',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[3].id,
             RelationshipId: users[0].id,
             type: 'parent',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[3].id,
             RelationshipId: users[1].id,
             type: 'parent',
+            status: Math.random(),
           }),
           Relationship.create({
             userId: users[3].id,
             RelationshipId: users[2].id,
             type: 'sibling',
+            status: Math.random(),
           }),
         ]);
       };
@@ -173,12 +185,12 @@ dbSync(true)
             familyId: family.id,
           }),
           Poll.create({
-            ownerId: users[3].id,
+            ownerId: users[2].id,
             text: 'What am I getting for Christmas?',
             familyId: family.id,
           }),
           Poll.create({
-            ownerId: users[4].id,
+            ownerId: users[3].id,
             text: "Can we get McDonald's?",
             familyId: family.id,
           }),
@@ -256,11 +268,6 @@ dbSync(true)
           }),
           Vote.create({
             userId: users[3].id,
-            choiceId: choices[2].id,
-            pollId: polls[1].id,
-          }),
-          Vote.create({
-            userId: users[4].id,
             choiceId: choices[2].id,
             pollId: polls[1].id,
           }),

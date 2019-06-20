@@ -27,15 +27,15 @@ const Relationship = db.define('relationship', {
     validate: {
       min: {
         args: [0],
-        msg: 'Mood must be between 0 and 1.',
+        msg: 'Status must be between 0 and 1.',
       },
       max: {
         args: 1,
-        msg: 'Mood must be between 0 and 1.',
+        msg: 'Status must be between 0 and 1.',
       },
       isFloat: {
         args: true,
-        msg: 'Mood must be entered as a floating point number.',
+        msg: 'Status must be entered as a floating point number.',
       },
     },
   },
@@ -52,21 +52,22 @@ Relationship.updateStatus = (userId, RelationshipId, diff) => {
   );
 };
 
-Relationship.findRelated = (userId) => {
+Relationship.findRelated = userId => {
   return Relationship.findAll({
     where: {
-      userId
-    }
-  })
-    .then(relationships => {
-      return User.findAll({
-        where: {
-          id: {
-            [Op.in]: relationships.map(relationship => relationship.RelationshipId)
-          }
-        }
-      })
-    })
-}
+      userId,
+    },
+  }).then(relationships => {
+    return User.findAll({
+      where: {
+        id: {
+          [Op.in]: relationships.map(
+            relationship => relationship.RelationshipId
+          ),
+        },
+      },
+    });
+  });
+};
 
 module.exports = Relationship;
