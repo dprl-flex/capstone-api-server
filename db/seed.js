@@ -10,45 +10,58 @@ const {
   Vote,
 } = require('./models');
 const { dbSync } = require('./index');
+const { dave, lauren } = require('./images');
 
 dbSync(true)
   .then(() => {
     dbSync(true).then(async () => {
       const createFamily = () => {
         return Family.create({
-          name: 'Marx',
-          code: 'MarxBros',
+          name: 'DPRL',
+          code: 'DPRL',
         });
       };
 
       const family = await createFamily();
 
       const createUsers = family => {
-        const famCount = [...new Array(4)];
-        const lastName = faker.name.lastName();
         return Promise.all([
           User.create({
-            firstName: 'Jane',
-            lastName: 'Doe',
+            firstName: 'Dave',
+            lastName: 'Siegel',
             isAdmin: true,
-            birthday: new Date('1/1/1989'),
-            imgUrl: faker.internet.avatar(),
-            email: 'janedoe@email.com',
+            imgUrl: dave,
+            email: 'dave.e.siegel@gmail.com',
             password: 'p@ssWord!2',
             familyId: family.id,
           }),
-          ...famCount.map((v, idx) =>
-            User.create({
-              firstName: faker.name.firstName(),
-              lastName,
-              isAdmin: idx < 2,
-              birthday: new Date('1/1/1989'),
-              imgUrl: faker.internet.avatar(),
-              email: faker.internet.email(),
-              password: 'tH1s1sVal1d!',
-              familyId: family.id,
-            })
-          ),
+          User.create({
+            firstName: 'Lauren',
+            lastName: 'West',
+            isAdmin: true,
+            imgUrl: lauren,
+            email: 'laurenwest12@gmail.com',
+            password: 'p@ssWord!2',
+            familyId: family.id,
+          }),
+          User.create({
+            firstName: 'Ruby',
+            lastName: 'Barry',
+            isAdmin: true,
+            imgUrl: lauren,
+            email: 'rubypbarry@gmail.com',
+            password: 'p@ssWord!2',
+            familyId: family.id,
+          }),
+          User.create({
+            firstName: 'Preston',
+            lastName: 'Chaplin',
+            isAdmin: true,
+            imgUrl: lauren,
+            email: 'preston.chaplin@gmail.com',
+            password: 'p@ssWord!2',
+            familyId: family.id,
+          }),
         ]);
       };
 
@@ -89,12 +102,12 @@ dbSync(true)
           }),
           Relationship.create({
             userId: users[0].id,
-            RelationshipId: users[3].id,
+            RelationshipId: users[2].id,
             type: 'child',
           }),
           Relationship.create({
             userId: users[0].id,
-            RelationshipId: users[4].id,
+            RelationshipId: users[3].id,
             type: 'child',
           }),
           Relationship.create({
@@ -104,42 +117,42 @@ dbSync(true)
           }),
           Relationship.create({
             userId: users[1].id,
-            RelationshipId: users[3].id,
+            RelationshipId: users[2].id,
             type: 'child',
           }),
           Relationship.create({
             userId: users[1].id,
-            RelationshipId: users[4].id,
+            RelationshipId: users[3].id,
             type: 'child',
           }),
           Relationship.create({
-            userId: users[3].id,
+            userId: users[2].id,
             RelationshipId: users[0].id,
             type: 'parent',
           }),
           Relationship.create({
-            userId: users[3].id,
+            userId: users[2].id,
             RelationshipId: users[1].id,
             type: 'parent',
           }),
           Relationship.create({
-            userId: users[3].id,
-            RelationshipId: users[4].id,
+            userId: users[2].id,
+            RelationshipId: users[3].id,
             type: 'sibling',
           }),
           Relationship.create({
-            userId: users[4].id,
+            userId: users[3].id,
             RelationshipId: users[0].id,
             type: 'parent',
           }),
           Relationship.create({
-            userId: users[4].id,
+            userId: users[3].id,
             RelationshipId: users[1].id,
             type: 'parent',
           }),
           Relationship.create({
-            userId: users[4].id,
-            RelationshipId: users[3].id,
+            userId: users[3].id,
+            RelationshipId: users[2].id,
             type: 'sibling',
           }),
         ]);
